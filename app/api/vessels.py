@@ -31,7 +31,7 @@ async def list_vessels(limit: int = Query(100, ge=1, le=1000), offset: int = Que
                     "lon": pos.longitude,
                     "speed": pos.speed_over_ground,
                     "course": pos.course_over_ground,
-                    "destination": pos.destination,
+                    "destination": None,
                 })
         
         total = db.query(VesselPosition.mmsi).distinct().count()
