@@ -2,7 +2,7 @@
 Vessel API endpoints
 """
 from fastapi import APIRouter, HTTPException, Query
-from typing import Optional, List
+from typing import Optional
 from datetime import datetime, timedelta
 
 from app.core.database import SessionLocal
@@ -25,8 +25,8 @@ async def list_vessels(limit: int = Query(100, ge=1, le=1000), offset: int = Que
                 seen_mmsi.add(pos.mmsi)
                 vessels.append({
                     "mmsi": pos.mmsi,
-                    "name": pos.vessel_name or f"Vessel {pos.mmsi}",
-                    "type": pos.vessel_type or "unknown",
+                    "name": f"Vessel {pos.mmsi}",
+                    "type": "unknown",
                     "lat": pos.latitude,
                     "lon": pos.longitude,
                     "speed": pos.speed_over_ground,
@@ -48,10 +48,13 @@ async def get_vessel(mmsi: int):
     if not pos:
         raise HTTPException(status_code=404, detail="Vessel not found")
     return {
-        "mmsi": pos.mmsi, "name": pos.vessel_name or f"Vessel {pos.mmsi}",
-        "type": pos.vessel_type or "unknown",
-        "lat": pos.latitude, "lon": pos.longitude,
-        "speed": pos.speed_over_ground, "course": pos.course_over_ground,
+        "mmsi": pos.mmsi,
+        "name": f"Vessel {pos.mmsi}",
+        "type": "unknown",
+        "lat": pos.latitude,
+        "lon": pos.longitude,
+        "speed": pos.speed_over_ground,
+        "course": pos.course_over_ground,
     }
 
 
