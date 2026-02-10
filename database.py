@@ -6,6 +6,14 @@ Base = declarative_base()
 engine = create_engine("sqlite:///./maritime.db", connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+def get_db():
+    """Get database session"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 def init_db():
     Base.metadata.create_all(bind=engine)
 
